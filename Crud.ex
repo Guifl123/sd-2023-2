@@ -1,32 +1,26 @@
-defmodule MeuBancoDeDados do
-  use Ecto.Schema
+defmodule Polígono do
+  defstruct [pontos: %{}]
 
-  schema "meu_banco_de_dados" do
-    field :nome, :string
-    field :idade, :integer
+  def new do
+    %Polígono{pontos: %{}}
   end
 
-  def get_registro(id) do
-    Repo.get(MeuBancoDeDados, id)
+  def adicionar_ponto(polígono, ponto) do
+    polígono
+      |> Map.put(ponto.x, ponto.y)
   end
 
-  def criar_registro(nome, idade) do
-    Repo.insert(MeuBancoDeDados, %{nome: nome, idade: idade})
+  def ler_pontos(polígono) do
+    polígono.pontos
   end
 
-  def atualizar_registro(id, nome, idade) do
-    Repo.update(MeuBancoDeDados, id, %{nome: nome, idade: idade})
+  def atualizar_ponto(polígono, ponto, novo_ponto) do
+    polígono
+      |> Map.update(ponto.x, novo_ponto.y, fn _ -> novo_ponto.y end)
   end
 
-  def excluir_registro(id) do
-    Repo.delete(MeuBancoDeDados, id)
+  def excluir_ponto(polígono, ponto) do
+    polígono
+      |> Map.delete(ponto.x)
   end
 end
-
-# Exemplo de uso
-
-iex> MeuBancoDeDados.criar_registro("João", 30)
-{:ok, %MeuBancoDeDados.MeuBancoDeDados{id: 1, nome: "João", idade: 30}}
-
-iex> MeuBancoDeDados.get_registro(1)
-%MeuBancoDeDados.MeuBancoDeDados{id: 1, nome: "João", idade: 30}
