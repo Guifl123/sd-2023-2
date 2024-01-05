@@ -1,56 +1,41 @@
-defmodule CRUD do
-  use Ecto.Schema
-
-  schema "crud" do
-    field :nome, :string
-    field :idade, :integer
+defmodule SistemaSimples do
+  defmodule Tarefa1 do
+    def run do
+      IO.puts "Executando Tarefa 1"
+    end
   end
 
-  def create(nome, idade) do
-    tarefa = Task.async(fn ->
-      CRUD.insert(nome, idade)
-    end)
-
-    tarefa
+  defmodule Tarefa2 do
+    def run do
+      IO.puts "Executando Tarefa 2"
+    end
   end
 
-  def update(id, nome, idade) do
-    tarefa = Task.async(fn ->
-      CRUD.update(id, nome, idade)
-    end)
-
-    tarefa
+  defmodule Tarefa3 do
+    def run do
+      IO.puts "Executando Tarefa 3"
+    end
   end
 
-  def delete(id) do
-    tarefa = Task.async(fn ->
-      CRUD.delete(id)
-    end)
-
-    tarefa
+  defmodule Tarefa4 do
+    def run do
+      IO.puts "Executando Tarefa 4"
+    end
   end
 
-  def get(id) do
-    tarefa = Task.async(fn ->
-      CRUD.get(id)
-    end)
+  def start do
+    # Cria as tarefas
+    tarefa1 = Task.start(Tarefa1, :run)
+    tarefa2 = Task.start(Tarefa2, :run)
+    tarefa3 = Task.start(Tarefa3, :run)
+    tarefa4 = Task.start(Tarefa4, :run)
 
-    tarefa
-  end
+    # Espera que todas as tarefas sejam concluídas
+    for tarefa <- [tarefa1, tarefa2, tarefa3, tarefa4] do
+      Task.await(tarefa)
+    end
 
-  def insert(nome, idade) do
-    Repo.insert(CRUD, %CRUD{nome: nome, idade: idade})
-  end
-
-  def update(id, nome, idade) do
-    Repo.update(CRUD, id, %CRUD{nome: nome, idade: idade})
-  end
-
-  def delete(id) do
-    Repo.delete(CRUD, id)
-  end
-
-  def get(id) do
-    Repo.get(CRUD, id)
+    # Imprime uma mensagem de conclusão
+    IO.puts "Sistema concluído"
   end
 end
